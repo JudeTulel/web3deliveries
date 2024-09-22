@@ -1,0 +1,47 @@
+type FundsDeposited @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FundsTransferred @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PackageCreated @entity(immutable: true) {
+  id: Bytes!
+  packageId: BigInt! # uint256
+  sender: Bytes! # address
+  recipient: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PackageDelivered @entity(immutable: true) {
+  id: Bytes!
+  packageId: BigInt! # uint256
+  deliveryGuy: Bytes! # address
+  timestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PackagePickedUp @entity(immutable: true) {
+  id: Bytes!
+  packageId: BigInt! # uint256
+  deliveryGuy: Bytes! # address
+  timestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

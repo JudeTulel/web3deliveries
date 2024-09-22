@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PackageDelivery
+    network: sepolia
+    source:
+      address: "0x8BA77209a94d16CA5d4f7Bf3A8641927B69046aA"
+      abi: PackageDelivery
+      startBlock: 6738469
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FundsDeposited
+        - FundsTransferred
+        - PackageCreated
+        - PackageDelivered
+        - PackagePickedUp
+      abis:
+        - name: PackageDelivery
+          file: ./abis/PackageDelivery.json
+      eventHandlers:
+        - event: FundsDeposited(address,uint256)
+          handler: handleFundsDeposited
+        - event: FundsTransferred(address,uint256)
+          handler: handleFundsTransferred
+        - event: PackageCreated(uint256,address,address)
+          handler: handlePackageCreated
+        - event: PackageDelivered(uint256,address,uint256)
+          handler: handlePackageDelivered
+        - event: PackagePickedUp(uint256,address,uint256)
+          handler: handlePackagePickedUp
+      file: ./src/package-delivery.ts
