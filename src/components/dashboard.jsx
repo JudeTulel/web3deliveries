@@ -19,7 +19,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { PackageDeliveryAbi, RatingContractAbi } from '@/constants/ContractAbi'
 
-const GRAPH_API_URL = 'https://api.thegraph.com/subgraphs/name/yourusername/yoursubgraph'
+const GRAPH_API_URL = 'https://api.studio.thegraph.com/query/88640/web3deliveries/"v.0.0.5"'
 const CONTRACT_ADDRESS = '0x8BA77209a94d16CA5d4f7Bf3A8641927B69046aA'
 const CONTRACT_ABI = PackageDeliveryAbi
 const RATING_CONTRACT_ADDRESS = '0x2Bd08EE606CcB8f74bd3770e04C5c2F2dE17e25b'
@@ -58,19 +58,19 @@ export default function Dashboard({ address, role }) {
 
   const fetchPackages = async () => {
     const query = gql`
-      query GetPackages($address: String!, $role: String!) {
-        packages(where: { ${role === 'sender' ? 'sender' : 'deliveryGuy'}: $address }) {
-          id
-          postage
-          minRating
-          sender
-          recipient
-          deliveryGuy
-          isPickedUp
-          isDelivered
-        }
+    query GetPackages($address: String!, $role: String!) {
+      packages(where: { ${role === 'sender' ? 'sender' : 'deliveryGuy'}: $address }) {
+        id
+        postage
+        minRating
+        sender
+        recipient
+        deliveryGuy
+        isPickedUp
+        isDelivered
       }
-    `
+    }
+`    
     try {
       const data = await request(GRAPH_API_URL, query, { address: address.toLowerCase(), role })
       setPackages(data.packages)

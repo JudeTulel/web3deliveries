@@ -36,3 +36,36 @@ dataSources:
         - event: PackagePickedUp(uint256,address,uint256)
           handler: handlePackagePickedUp
       file: ./src/package-delivery.ts
+
+  - kind: ethereum
+    name: DeliveryTracking
+    network: sepolia
+    source:
+      address: "0x2Bd08EE606CcB8f74bd3770e04C5c2F2dE17e25b"
+      abi: DeliveryTracking
+      startBlock: 6738274
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FundsDeposited
+        - FundsTransferred
+        - PackageCreated
+        - PackageDelivered
+        - PackagePickedUp
+      abis:
+        - name: DeliveryTracking
+          file: ./abis/DeliveryTracking.json
+      eventHandlers:
+        - event: FundsDeposited(address,uint256)
+          handler: handleFundsDeposited
+        - event: FundsTransferred(address,uint256)
+          handler: handleFundsTransferred
+        - event: PackageCreated(uint256,address,address)
+          handler: handlePackageCreated
+        - event: PackageDelivered(uint256,address,uint256)
+          handler: handlePackageDelivered
+        - event: PackagePickedUp(uint256,address,uint256)
+          handler: handlePackagePickedUp
+      file: ./src/package-delivery.ts

@@ -3,6 +3,9 @@
     "PackageDelivery": {
       "address": "0x8BA77209a94d16CA5d4f7Bf3A8641927B69046aA",
       "startBlock": 6738469
+    },
+    "DeliveryTracking": {
+      "address": "0x2Bd08EE606CcB8f74bd3770e04C5c2F2dE17e25b"
     }
   }
 }

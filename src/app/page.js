@@ -8,14 +8,63 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { toast } from '@/hooks/use-toast'
+import { useQuery, gql } from '@apollo/client'
+import client from '@/ApolloClient'
+// Defining GraphQL queries
+const GET_PACKAGES = gql`
+  query GetPackages($address: String!, $role: String!) {
+    packages(where: { ${role === 'user' ? 'sender' : 'deliveryGuy'}: $address }) {
+      id
+      postage
+      minRating
+      sender
+      recipient
+      deliveryGuy
+      isPickedUp
+      isDelivered
+    }
+  }
+`
+
+const GET_RATINGS = gql`
+  query GetRatings($address: String!) {
+    ratings(where: { user: $address }) {
+      id
+      ratingValue
+      comment
+      timestamp
+    }
+  }
+`
+
+const GET_COMPLETION_RATE = gql`
+  query GetCompletionRate($address: String!) {
+    completionRate(where: { user: $address }) {
+      rate
+      totalDeliveries
+      completedDeliveries
+    }
+  }
+`
 
 export default function Home() {
   const [address, setAddress] = useState('')
   const [role, setRole] = useState('')
+  const [packages, setPackages] = useState([])
+  const [ratings, setRatings] = useState([])
+  const [completionRate, setCompletionRate] = useState(null)
 
   useEffect(() => {
     checkConnection()
   }, [])
+
+  useEffect(() => {
+    if (address && role) {
+      fetchPackages()
+      fetchRatings()
+      fetchCompletionRate()
+    }
+  }, [address, role])
 
   const checkConnection = async () => {
     if (typeof window.ethereum !== 'undefined') {
@@ -67,6 +116,42 @@ export default function Home() {
     })
   }
 
+  const fetchPackages = async () => {
+    const { data, error } = useQuery(GET_PACKAGES, {
+      variables: { address, role },
+    })
+
+    if (error) {
+      console.error('Error fetching packages:', error)
+    } else {
+      setPackages(data.packages)
+    }
+  }
+
+  const fetchRatings = async () => {
+    const { data, error } = useQuery(GET_RATINGS, {
+      variables: { address },
+    })
+
+    if (error) {
+      console.error('Error fetching ratings:', error)
+    } else {
+      setRatings(data.ratings)
+    }
+  }
+
+  const fetchCompletionRate = async () => {
+    const { data, error } = useQuery(GET_COMPLETION_RATE, {
+      variables: { address },
+    })
+
+    if (error) {
+      console.error('Error fetching completion rate:', error)
+    } else {
+      setCompletionRate(data.completionRate)
+    }
+  }
+
   if (!address) {
     return (
       <div className="container mx-auto p-4 flex items-center justify-center min-h-screen">
@@ -108,5 +193,5 @@ export default function Home() {
     )
   }
 
-  return <Dashboard address={address} role={role} />
+  return <Dashboard address={address} role={role} packages={packages} ratings={ratings} completionRate={completionRate} />
 }
