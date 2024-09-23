@@ -4,32 +4,6 @@
 
 This project is a decentralized delivery application that leverages blockchain technology and The Graph protocol to secure deliveries. By using smart contracts, it ensures transparency and accountability in the delivery process. The application allows users to send and receive packages securely, while delivery personnel can manage their tasks effectively.
 
-## Features
-
-- **Wallet Connection**: Users can connect their wallets (e.g., MetaMask) to the application.
-- **Role Selection**: Users can choose between two roles: Sender/Recipient or Delivery Person.
-- **Package Management**: Users can create and manage package deliveries using smart contracts.
-- **Real-Time Data Queries**: Utilize The Graph to fetch package details, ratings, and completion rates in real-time.
-
-## Technologies Used
-
-- **Ethereum**: Smart contracts for managing delivery transactions.
-- **The Graph**: A decentralized protocol for indexing and querying blockchain data.
-- **Apollo Client**: For managing GraphQL queries in the frontend.
-- **React**: For building the user interface.
-- **Web3.js**: For interacting with the Ethereum blockchain.
-
-## How It Works
-
-### Smart Contract for Deliveries
-#### https://eth-sepolia.blockscout.com/address/0x8BA77209a94d16CA5d4f7Bf3A8641927B69046aA
-#### https://eth-sepolia.blockscout.com/address/0x2Bd08EE606CcB8f74bd3770e04C5c2F2dE17e25b
-
-The core functionality of the application is managed through a smart contract that:
-
-1. **Creates Package Orders**: Users can create package orders that include essential details such as sender, recipient, and postage.
-2. **Manages Delivery Status**: The contract tracks the status of deliveries (e.g., picked up, delivered).
-3. **Validates Delivery**: Upon delivery, the recipient verifies the package, triggering the contract to release funds to the delivery person.
 
 ### Utilizing The Graph Protocol
 
