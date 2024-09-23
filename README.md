@@ -47,7 +47,8 @@ The Graph is used to enable efficient data retrieval from the blockchain, enhanc
 
 ## Example Queries
 
-Here are some example GraphQL queries used in the application:
+Here are some example GraphQL queries used in the application: 
+if you want to check their usag check here [dasboard.jsx](https://github.com/JudeTulel/web3deliveries/blob/main/src/components/dashboard.jsx) 
 
 ```javascript
 import { gql } from '@apollo/client';
