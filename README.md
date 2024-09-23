@@ -38,9 +38,9 @@ The core functionality of the application is managed through a smart contract th
 
 The Graph is used to enable efficient data retrieval from the blockchain, enhancing the application's performance. Here's how:
 
-1. **Subgraph Creation**: A subgraph is created to index the events emitted by the smart contract, including package creations, updates, and delivery confirmations.
+1. **Subgraph Creation**: A subgraph is created to index the events emitted by the smart contract, including package creations, updates, and delivery confirmations.(check here)[https://thegraph.com/studio/subgraph/web3deliveries/playground]
    
-2. **GraphQL Queries**: The frontend uses GraphQL queries to fetch data from The Graph:
+3. **GraphQL Queries**: The frontend uses GraphQL queries to fetch data from The Graph:
    - **Get Packages**: Retrieves all packages based on the user's address and role.
    - **Get Ratings**: Fetches ratings given by users based on their delivery experience.
    - **Get Completion Rate**: Gathers statistics on delivery completion rates for users.
