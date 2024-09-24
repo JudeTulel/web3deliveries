@@ -1,42 +1,135 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Web3 Delivery App
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This project is a decentralized delivery application that leverages blockchain technology and The Graph protocol to secure deliveries. By using smart contracts, it ensures transparency and accountability in the delivery process. The application allows users to send and receive packages securely, while delivery personnel can manage their tasks effectively.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
 
+- **Wallet Connection**: Users can connect their wallets (e.g., MetaMask) to the application.
+- **Role Selection**: Users can choose between two roles: Sender/Recipient or Delivery Person.
+- **Package Management**: Users can create and manage package deliveries using smart contracts.
+- **Real-Time Data Queries**: Utilize The Graph to fetch package details, ratings, and completion rates in real-time.
 
+## Technologies Used
 
+- **Ethereum**: Smart contracts for managing delivery transactions.
+- **The Graph**: A decentralized protocol for indexing and querying blockchain data.
+- **Apollo Client**: For managing GraphQL queries in the frontend.
+- **Next.js**: For building the user interface.
+- **Web3.js**: For interacting with the Ethereum blockchain.
 
+## How It Works
 
+### Smart Contract for Deliveries
 
+**Smart Contract Addresses**:
+- Delivery Contract: [Address](https://eth-sepolia.blockscout.com/address/0x8BA77209a94d16CA5d4f7Bf3A8641927B69046aA)
+- Ratings Contract: [Address](https://eth-sepolia.blockscout.com/address/0x2Bd08EE606CcB8f74bd3770e04C5c2F2dE17e25b)
+
+The core functionality of the application is managed through a smart contract that:
+
+1. **Creates Package Orders**: Users can create package orders that include essential details such as sender, recipient, and postage.
+2. **Manages Delivery Status**: The contract tracks the status of deliveries (e.g., picked up, delivered).
+3. **Validates Delivery**: Upon delivery, the recipient verifies the package, triggering the contract to release funds to the delivery person.
+4. **Manages Delivery Ratings**: Allows users to rate their delivery experience.
+
+### Utilizing The Graph Protocol
+
+The Graph is used to enable efficient data retrieval from the blockchain, enhancing the application's performance. Here's how:
+
+1. **Subgraph Creation**: A subgraph is created to index the events emitted by the smart contract, including package creations, updates, and delivery confirmations.(check here)[https://thegraph.com/studio/subgraph/web3deliveries/playground]
+   
+3. **GraphQL Queries**: The frontend uses GraphQL queries to fetch data from The Graph:
+   - **Get Packages**: Retrieves all packages based on the user's address and role.
+   - **Get Ratings**: Fetches ratings given by users based on their delivery experience.
+   - **Get Completion Rate**: Gathers statistics on delivery completion rates for users.
+
+## Example Queries
+
+Here are some example GraphQL queries used in the application: 
+if you want to check their usag check here [dasboard.jsx](https://github.com/JudeTulel/web3deliveries/blob/main/src/components/dashboard.jsx) 
+
+```javascript
+import { gql } from '@apollo/client';
+
+// Get Packages Picked Up
+const GET_PACKAGES_PICKED_UP = gql`
+  query GetPackagesPickedUp($first: Int!, $orderBy: String!, $orderDirection: String!) {
+    packagePickedUps(first: $first, orderBy: $orderBy, orderDirection: $orderDirection) {
+      id
+      packageId
+      deliveryGuy
+      timestamp
+    }
+  }
+`;
+
+// Get Packages Created
+const GET_PACKAGES_CREATED = gql`
+  query GetPackagesCreated($first: Int!, $orderBy: String!, $orderDirection: String!) {
+    packageCreateds(first: $first, orderBy: $orderBy, orderDirection: $orderDirection) {
+      id
+      packageId
+      sender
+      recipient
+      blockTimestamp
+    }
+  }
+`;
+
+// Get Packages Delivered
+const GET_PACKAGES_DELIVERED = gql`
+  query GetPackagesDelivered($first: Int!, $orderBy: String!, $orderDirection: String!) {
+    packageDelivereds(first: $first, orderBy: $orderBy, orderDirection: $orderDirection) {
+      id
+      packageId
+      deliveryGuy
+      timestamp
+    }
+  }
+`;
+
+// Get Packages Created By Sender
+const GET_PACKAGES_CREATED_BY_SENDER = gql`
+  query GetPackagesCreatedBySender($sender: String!) {
+    packageCreateds(where: { sender: $sender }) {
+      id
+      sender
+      recipient
+    }
+  }
+`;
+
+export { 
+  GET_PACKAGES_PICKED_UP, 
+  GET_PACKAGES_CREATED, 
+  GET_PACKAGES_DELIVERED, 
+  GET_PACKAGES_CREATED_BY_SENDER 
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```bash
+   git clone https://github.com/JudeTulel/web3deliveries
+   cd web3deliveries
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Start the application:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+If you'd like to contribute to the project, please fork the repository and create a pull request with your changes.
