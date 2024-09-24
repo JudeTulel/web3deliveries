@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a decentralized delivery application that leverages blockchain technology and The Graph protocol to secure deliveries. By using smart contracts, it ensures transparency and accountability in the delivery process. The application allows users to send and receive packages securely, while delivery personnel can manage their tasks effectively.
+This project is a decentralized delivery application that leverages blockchain technology and The Graph protocol to secure deliveries. By using smart contracts, it allows for transparency and accountability in the delivery process. The application allows users to send and receive packages securely in a user owned application, while delivery personnel can manage their tasks effectively.
 
 ## Features
 
