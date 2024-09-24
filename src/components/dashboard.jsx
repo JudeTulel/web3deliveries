@@ -185,7 +185,63 @@ export default function Dashboard({ address, role }) {
       });
     }
   };
+  const fetchStats = async () => {
+    const query = gql`
+      query GetStats($address: String!) {
+        user(id: $address) {
+          totalDeliveries
+          successfulDeliveries
+          averageRating
+          completionRate
+        }
+      }
+    `;
 
+    try {
+      const data = await request(GRAPH_API_URL, query, { address: address.toLowerCase() });
+      if (data.user) {
+        setStats(data.user);
+      } else {
+        throw new Error('No stats data available');
+      }
+    } catch (error) {
+      console.error('Error fetching stats from The Graph:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch stats from the Graph API.',
+        variant: 'destructive',
+      });
+      fetchStatsFallback();
+    }
+  };
+  const fetchStatsFallback = async () => {
+    if (!ratingContract) return;
+
+    try {
+      let statsData = {};
+      if (role === 'deliveryGuy') {
+        const [averageRating, completionRate, totalDeliveries, successfulDeliveries] = await Promise.all([
+          ratingContract.methods.getAverageRating(address).call(),
+          ratingContract.methods.getCompletionRate(address).call(),
+          ratingContract.methods.getTotalDeliveries(address).call(),
+          ratingContract.methods.getSuccessfulDeliveries(address).call(),
+        ]);
+        statsData = { averageRating, completionRate, totalDeliveries, successfulDeliveries };
+      } else if (role === 'sender') {
+        const totalPackagesSent = await ratingContract.methods.getTotalPackagesSent(address).call();
+        statsData = { totalPackagesSent };
+      }
+      setStats(statsData);
+    } catch (error) {
+      console.error('Error fetching stats from contract:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch stats from contract.',
+        variant: 'destructive',
+      });
+    }
+  };
+ 
   const handleVerifyDelivery = async (packageId) => {
     try {
       await contract.methods.verifyAndCompleteDelivery(packageId, true, true).send({ from: address });
